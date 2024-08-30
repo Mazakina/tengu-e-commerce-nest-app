@@ -1,0 +1,124 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum OrderStatus {
+  pending
+  confirmed
+  shipped
+  delivered
+  cancelled
+}
+
+enum CartStatus {
+  active
+  abandoned
+  checked_out
+}
+
+model User {
+  id       String    @id @default(uuid())
+  name     String
+  email    String    @unique
+  password String
+  cart     Cart?
+  Address  Address[]
+
+  @@map("users")
+}
+
+model Address {
+  id         String   @id @default(uuid())
+  street     String
+  city       String
+  state      String
+  postalCode String
+  country    String
+  userId     String   @map("user_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("addresses")
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  price       Int
+  description String
+  stock       Int
+  collections String[]
+  sizes       String[]
+  models      String[]
+
+  cartItems CartItem[]
+  OrderItem OrderItem[]
+
+  @@map("products")
+}
+
+model OrderItem {
+  id        String @id @default(uuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Int
+
+  order   Order   @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+model Order {
+  id             String      @id @default(uuid())
+  total          Int
+  status         OrderStatus
+  updatedAt      DateTime    @updatedAt @map("updated_at")
+  createdAt      DateTime    @default(now()) @map("created_at")
+  idempotencyKey String      @unique
+  address        String
+  userId         String      @map("user_id")
+
+  OrderItem OrderItem[]
+
+  @@map("orders")
+}
+
+model Cart {
+  id        String     @id @default(uuid())
+  userId    String     @unique
+  status    CartStatus
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  createdAt DateTime   @default(now()) @map("created_at")
+
+  user     User       @relation(fields: [userId], references: [id])
+  CartItem CartItem[]
+
+  @@map("carts")
+}
+
+model CartItem {
+  id        String @id @default(uuid())
+  productId String
+  cartId    String
+  quantity  Int
+
+  product Product @relation(fields: [productId], references: [id])
+  Cart    Cart    @relation(fields: [cartId], references: [id])
+
+  @@map("cart_items")
+}

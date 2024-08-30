@@ -1,0 +1,193 @@
+@baseUrl = http://localhost:3333
+@authToken = {{authenticate.response.body.access_token}}
+# @name create_account
+POST {{baseUrl}}/customer/create
+Content-Type: application/json
+
+{
+  "name": "Jules",
+  "email": "peixinho@gmail.com",
+  "password": "123456"
+}
+
+###
+
+# @name authenticate
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+
+{
+  "email": "peixinho@gmail.com",
+  "password": "123456"
+}
+
+###
+
+
+# @name update_address
+PUT {{baseUrl}}/address/c113278c-dbfb-4ba8-bb65-8181be6ff8ab
+Content-type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "id":"c113278c-dbfb-4ba8-bb65-8181be6ff8ab",
+  "street": "updated"
+}
+
+###
+
+# @name create_order
+POST {{baseUrl}}/order/create
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "items":[
+    {
+      "productId":"0589d4ee-cacc-48b6-b918-b5460860f6f7",
+      "quantity":2
+    },
+    {
+      "productId":"13473558-252b-48ef-9cef-46360e493da3",
+      "quantity":2
+    }
+  ],
+  "address":"testing",
+  "idempotencyKey":"idempotencyKey:2",
+  "userId":"51a95959-bf5b-4209-99b0-d187061fa847"
+}
+
+
+###
+# @name fetch_order_by_user_id
+
+
+GET {{baseUrl}}/user/order/51a95959-bf5b-4209-99b0-d187061fa847
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+
+
+###
+
+# @name cancel_order
+DELETE {{baseUrl}}/order/delete/203f91c4-913d-47cf-8c1d-9c6db6178c5a
+
+Authorization: Bearer {{authToken}}
+Content-type: application/json
+
+###
+
+# @name get_order
+GET {{baseUrl}}/order/0cf6281b-d267-42d7-ba5d-b6a132d3cd79
+Content-type: application/json
+Authorization: Bearer {{authToken}}
+
+
+###
+
+# @name fetch_order_items
+GET {{baseUrl}}/order/items/0cf6281b-d267-42d7-ba5d-b6a132d3cd79
+Content-type: application/json
+Authorization: Bearer {{authToken}}
+
+
+###
+# @name deliver_order
+PATCH {{baseUrl}}/order/deliver/203f91c4-913d-47cf-8c1d-9c6db6178c5a
+Content-type: application/json
+Authorization: Bearer {{authToken}}
+
+
+###
+
+# @name add_item_to_cart
+
+PUT {{baseUrl}}/cart
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "userId":"51a95959-bf5b-4209-99b0-d187061fa847",
+  "itemId":"0589d4ee-cacc-48b6-b918-b5460860f6f7",
+  "quantity": 2
+}
+
+###
+
+# @name add_item_to_cart-2
+
+PUT {{baseUrl}}/cart
+Content-Type: application/json
+
+{
+  "userId":"51a95959-bf5b-4209-99b0-d187061fa847",
+  "itemId":"13473558-252b-48ef-9cef-46360e493da3",
+  "quantity": 3
+}
+
+###
+
+# @name create_cart
+
+POST {{baseUrl}}/cart/create/8b03d80e-eaad-40b0-b95e-99779ced0a02
+Content-Type: application/json
+
+###
+# @name clean_cart
+DELETE {{baseUrl}}/cart/clean/e572eaf2-c59d-46b5-826a-70cc1d058b4b
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+###
+
+# @name remove_item_from_cart
+DELETE {{baseUrl}}/cart/item/delete/13473558-252b-48ef-9cef-46360e493da3
+Content-Type: application/json
+
+{
+  "userId":"51a95959-bf5b-4209-99b0-d187061fa847",
+  "itemId":"13473558-252b-48ef-9cef-46360e493da3"
+}
+
+###
+# @name fetch_all_products
+
+GET {{baseUrl}}/product 
+Content-Type: application/json
+
+###
+
+# @name delete_product_by_id
+DELETE {{baseUrl}}/product/6c0f3952-4e93-403a-8982-757df3b84fb1
+Content-Type: application/json
+
+### 
+
+# @name get_product_By_ID
+GET {{baseUrl}}/product/5be9e504-9fde-4362-89bd-22c323610721
+Content-Type: application/json
+
+###
+# @name fetch_all_of_collection
+
+GET {{baseUrl}}/product/collections/spring_2024
+Content-Type: application/json
+
+###
+
+# @name update_product_by_id
+
+PUT {{baseUrl}}/product/13473558-252b-48ef-9cef-46360e493da3
+Content-Type: application/json
+
+{
+  "name":"updated product",
+  "description":"some description",
+  "price":10099,
+  "stock":18,
+  "sizes":["s","m","l","xl"],
+  "collections":["spring_20"]
+}
+
+###
