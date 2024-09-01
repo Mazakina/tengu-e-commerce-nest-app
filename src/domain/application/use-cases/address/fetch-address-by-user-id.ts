@@ -5,7 +5,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 
 type FetchAddressByUserIdUseCaseResponse = Either<
   Error,
-  { addresses: Address[] }
+  { address: Address[] }
 >;
 
 @Injectable()
@@ -13,12 +13,12 @@ export class FetchAddressByUserIdUseCase {
   constructor(private addressRepository: AddressRepository) {}
 
   async execute(id: string): Promise<FetchAddressByUserIdUseCaseResponse> {
-    const addresses = await this.addressRepository.findByUserID(id);
+    const address = await this.addressRepository.findByUserID(id);
 
-    if (!addresses[0]) {
+    if (!address[0]) {
       return left(new BadRequestException());
     }
 
-    return right({ addresses });
+    return right({ address });
   }
 }

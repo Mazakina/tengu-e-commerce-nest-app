@@ -14,10 +14,8 @@ export class PrismaAddressRepository implements AddressRepository {
       },
     });
 
-    const addresses = result.map((value) =>
-      PrismaAddressMapper.toDomain(value),
-    );
-    return addresses;
+    const address = result.map((value) => PrismaAddressMapper.toDomain(value));
+    return address;
   }
 
   async create(address: Address): Promise<void> {

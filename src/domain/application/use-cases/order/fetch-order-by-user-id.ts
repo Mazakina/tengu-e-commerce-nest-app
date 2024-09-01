@@ -14,7 +14,6 @@ export class FetchOrderByUserIDUseCase {
 
   async execute(userId: string): Promise<FetchOrderByUserIDUseCaseResponse> {
     const orders = await this.orderRepository.findByUserID(userId);
-    console.log('orders:', orders);
     if (!orders[0]) {
       return left(new NotFoundException());
     }

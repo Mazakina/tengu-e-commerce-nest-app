@@ -13,7 +13,6 @@ export class FetchOrderByUserIdController {
     if (result.isLeft()) {
       throw new BadRequestException(result.value.message);
     }
-    console.log(userId);
 
     const orders = result.value.orders.map((order) =>
       OrderPresenter.toHttp(order),

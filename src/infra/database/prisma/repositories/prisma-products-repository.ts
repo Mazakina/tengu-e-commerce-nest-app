@@ -7,10 +7,14 @@ import { Product } from '@/domain/enterprise/entities/product';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { PrismaProductMapper } from '../mapper/prisma-product-mapper';
+import { CacheRepository } from '@/infra/cache/cache-repository';
 
 @Injectable()
 export class PrismaProductsRepository implements ProductsRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private cache: CacheRepository,
+  ) {}
   async findManyById(productIds: string[]): Promise<Product[]> {
     const productsData = await this.prisma.product.findMany({
       where: {
@@ -61,6 +65,13 @@ export class PrismaProductsRepository implements ProductsRepository {
   }
 
   async findByID(id: string): Promise<Product> {
+    const cacheHit = await this.cache.get(`product:${id}:details`);
+
+    if (cacheHit) {
+      const cachedData = JSON.parse(cacheHit);
+      return cachedData;
+    }
+
     const result = await this.prisma.product.findUnique({
       where: {
         id,
@@ -69,7 +80,10 @@ export class PrismaProductsRepository implements ProductsRepository {
     if (!result) {
       throw new NotFoundException();
     }
-    return PrismaProductMapper.toDomain(result);
+    const product = PrismaProductMapper.toDomain(result);
+
+    await this.cache.set(`product:${id}:details`, JSON.stringify(product));
+    return product;
   }
 
   async findByCollection({
@@ -108,5 +122,6 @@ export class PrismaProductsRepository implements ProductsRepository {
       },
       data,
     });
+    await this.cache.delete(`product:${product.id.toString()}:details`);
   }
 }

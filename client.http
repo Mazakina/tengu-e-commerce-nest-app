@@ -24,6 +24,26 @@ Content-Type: application/json
 ###
 
 
+# @name get_customer_by_id
+GET {{baseUrl}}/customer/3f5111ae-4e63-4865-b7d1-7291662d8317
+Content-type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+
+# @name update_customer_by_id
+PATCH {{baseUrl}}/customer/3f5111ae-4e63-4865-b7d1-7291662d8317
+Content-type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "password": "123456",
+  "email": "Jhone@example.com",
+  "name":"jules"
+}
+###
+
 # @name update_address
 PUT {{baseUrl}}/address/c113278c-dbfb-4ba8-bb65-8181be6ff8ab
 Content-type: application/json
@@ -38,6 +58,8 @@ Authorization: Bearer {{authToken}}
 
 # @name create_order
 POST {{baseUrl}}/order/create
+
+
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 

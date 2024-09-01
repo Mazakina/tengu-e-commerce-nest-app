@@ -6,7 +6,7 @@ export interface CustomerProps {
   name: string;
   email: string;
   password: string;
-  addresses?: Address[];
+  address?: Address[];
 }
 
 export class Customer extends AggregateRoot<CustomerProps> {
@@ -33,12 +33,12 @@ export class Customer extends AggregateRoot<CustomerProps> {
     this.props.password = value;
   }
 
-  get addresses() {
-    return this.props.addresses;
+  get address() {
+    return this.props.address;
   }
 
-  set addresses(value: Address[]) {
-    this.props.addresses = value;
+  set address(value: Address[]) {
+    this.props.address = value;
   }
   static create(props: CustomerProps, id?: UniqueEntityID) {
     const customer = new Customer(props, id);

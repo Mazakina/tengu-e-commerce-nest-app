@@ -22,7 +22,7 @@ export class Address extends Entity<AddressProps> {
       {
         ...props,
         createdAt: props.createdAt ?? new Date(),
-        updatedAt: new Date(),
+        updatedAt: props.updatedAt ?? new Date(),
       },
       id,
     );

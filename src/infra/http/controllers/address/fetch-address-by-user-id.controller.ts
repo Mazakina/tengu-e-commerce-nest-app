@@ -21,6 +21,6 @@ export class FetchAddressController {
     if (result.isLeft()) {
       throw new BadRequestException();
     }
-    return { addresses: result.value };
+    return { address: result.value };
   }
 }

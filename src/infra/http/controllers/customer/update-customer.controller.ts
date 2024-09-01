@@ -10,9 +10,9 @@ import { ZodValidationPipe } from '../../pipes/zod-validation-pipe';
 import { z } from 'zod';
 
 const updateCustomerBodySchema = z.object({
-  name: z.string(),
-  email: z.string(),
-  password: z.string(),
+  name: z.string().optional(),
+  email: z.string().optional(),
+  password: z.string().optional(),
 });
 
 type UpdateCustomerBodySchema = z.infer<typeof updateCustomerBodySchema>;
@@ -28,6 +28,7 @@ export class UpdateCustomerController {
     @Param('slug') slug: string,
     @Body(bodyValidationPipe) body: UpdateCustomerBodySchema,
   ) {
+    console.log('reached');
     const { name, email, password } = body;
     const result = await this.updateCustomerUseCase.execute({
       name,

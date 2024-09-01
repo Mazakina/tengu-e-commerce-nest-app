@@ -34,23 +34,30 @@ export class UpdateCustomerUseCase {
     customerId,
   }: UpdateCustomerUseCaseRequest): Promise<UpdateCustomerUseCaseResponse> {
     const customer = await this.customerRepository.findByID(customerId);
-
+    console.log('usecase', customer);
     if (!customer) {
       return left(new NotFoundException());
     }
-    const emailAlreadyExists = await this.customerRepository.findByEmail(email);
-    if (emailAlreadyExists) {
-      return left(new BadRequestException('Email already taken'));
+
+    if (email) {
+      const emailAlreadyExists =
+        await this.customerRepository.findByEmail(email);
+      if (emailAlreadyExists) {
+        return left(new BadRequestException('Email already taken'));
+      }
     }
-    const hashedPassword = await this.hashGenerator.hash(password);
+
     customer.name = name ?? customer.name;
     customer.email = email ?? customer.email;
-    customer.password = password ? hashedPassword : customer.password;
+    customer.password = password
+      ? await this.hashGenerator.hash(password)
+      : customer.password;
 
     try {
       this.customerRepository.save(customer);
       return right({ customer });
     } catch (e) {
+      console.log('left');
       return left(new NotFoundException());
     }
   }

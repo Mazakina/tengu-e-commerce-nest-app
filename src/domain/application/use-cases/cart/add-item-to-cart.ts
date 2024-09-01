@@ -9,7 +9,7 @@ import { UniqueEntityID } from '@/core/primitives/unique-entity-id';
 
 interface AddItemToCartUseCaseRequest {
   userId: string;
-  itemId: string;
+  productId: string;
   quantity: number;
 }
 
@@ -25,7 +25,7 @@ export class AddItemToCartUseCase {
 
   async execute({
     userId,
-    itemId,
+    productId,
     quantity,
   }: AddItemToCartUseCaseRequest): Promise<AddItemToCartUseCaseResponse> {
     const user = await this.customerRepository.findByID(userId);
@@ -45,7 +45,7 @@ export class AddItemToCartUseCase {
 
       const item = CartItem.create({
         cartId: newCart.id.toString(),
-        productId: itemId,
+        productId: productId,
         quantity,
       });
 
@@ -54,23 +54,25 @@ export class AddItemToCartUseCase {
       return right(null);
     }
 
-    const alreadyExistInCart = cart.items.find(
-      (value) => value.productId === itemId,
+    const alreadyExistInCart = cart.items.findIndex(
+      (value) => value.productId === productId,
     );
-
-    const total = alreadyExistInCart
-      ? quantity + alreadyExistInCart.quantity
-      : quantity;
+    if (alreadyExistInCart >= 0) {
+      cart.items[alreadyExistInCart].quantity += quantity;
+      await this.cartRepository.save(cart);
+      return right(null);
+    }
 
     const item = CartItem.create(
       {
         cartId: cart.id.toString(),
-        productId: itemId,
-        quantity: total,
+        productId: productId,
+        quantity,
       },
-      new UniqueEntityID(alreadyExistInCart?.id.toString()),
+      new UniqueEntityID(),
     );
-    await this.cartItemRepository.update(item);
+    cart.addItems(item);
+    await this.cartRepository.save(cart);
 
     return right(null);
   }

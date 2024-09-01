@@ -51,7 +51,7 @@ model Address {
 
   user User @relation(fields: [userId], references: [id])
 
-  @@map("addresses")
+  @@map("address")
 }
 
 model Product {

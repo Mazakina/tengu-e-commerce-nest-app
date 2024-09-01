@@ -7,7 +7,7 @@ export class CustomerPresenter {
       name: customer.name,
       email: customer.email,
       password: customer.password,
-      addresses: customer.addresses,
+      address: customer.address,
     };
   }
 }

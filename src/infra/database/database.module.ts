@@ -14,8 +14,10 @@ import { CartItemRepository } from '@/domain/application/repositories/cart-item-
 import { PrismaCartItemRepository } from './prisma/repositories/prisma-cart-item-repository';
 import { OrderItemRepository } from '@/domain/application/repositories/order-item-repository';
 import { PrismaOrderItemRepository } from './prisma/repositories/prisma-order-item-repository';
+import { CacheModule } from '../cache/cache.module';
 
 @Module({
+  imports: [CacheModule],
   providers: [
     PrismaService,
     { provide: ProductsRepository, useClass: PrismaProductsRepository },
