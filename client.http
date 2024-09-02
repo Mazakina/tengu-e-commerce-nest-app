@@ -38,9 +38,7 @@ Content-type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "password": "123456",
-  "email": "Jhone@example.com",
-  "name":"jules"
+  "name":"jules t"
 }
 ###
 

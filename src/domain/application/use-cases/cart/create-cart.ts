@@ -1,7 +1,7 @@
 import { Cart, CartProps } from '@/domain/enterprise/entities/cart';
 import { CartRepository } from '../../repositories/cart-repository';
-import { Either, right } from '@/core/either';
-import { Injectable } from '@nestjs/common';
+import { Either, left, right } from '@/core/either';
+import { BadRequestException, Injectable } from '@nestjs/common';
 
 type enumStatus = CartProps['status'];
 
@@ -12,7 +12,7 @@ type CreateCartUseCaseRequest = {
   userId: string;
 };
 
-type CreateCartUseCaseResponse = Either<null, { cart: Cart }>;
+type CreateCartUseCaseResponse = Either<BadRequestException, { cart: Cart }>;
 
 @Injectable()
 export class CreateCartUseCase {
@@ -24,6 +24,10 @@ export class CreateCartUseCase {
     updatedAt,
     userId,
   }: CreateCartUseCaseRequest): Promise<CreateCartUseCaseResponse> {
+    const cartAlreadyExist = await this.cartRepository.findByUserID(userId);
+    if (cartAlreadyExist) {
+      return left(new BadRequestException());
+    }
     const cart = Cart.create({
       items: [],
       status,
