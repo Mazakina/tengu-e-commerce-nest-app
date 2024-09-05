@@ -41,18 +41,13 @@ export class Order extends AggregateRoot<OrderProps> {
     );
     order.calculateTotal();
     // to test
+    order.addDomainEvent(new OnOrderCreatedEvent(order.items));
+    console.log('log:', order.domainEvents);
     return order;
   }
 
   get items() {
     return this.props.items;
-  }
-  protected procEvent() {
-    this.addDomainEvent(new OnOrderCreatedEvent(this.items));
-  }
-
-  dispatch() {
-    this.procEvent();
   }
 
   get idempotencyKey(): UniqueEntityID {
@@ -63,6 +58,7 @@ export class Order extends AggregateRoot<OrderProps> {
     this.props.items = items;
     this.calculateTotal();
   }
+
   get address() {
     return this.props.address;
   }
@@ -70,9 +66,11 @@ export class Order extends AggregateRoot<OrderProps> {
   set address(address: string) {
     this.props.address = address;
   }
+
   get status() {
     return this.props.status;
   }
+
   get userId() {
     return this.props.userId;
   }

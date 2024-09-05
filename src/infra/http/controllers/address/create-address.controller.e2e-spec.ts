@@ -28,7 +28,6 @@ describe('Create Address (E2E)', () => {
 
   test('[POST]/address/create ', async () => {
     const user = await customerFactory.makePrismaCustomer();
-    console.log('reached');
     const accessToken = jwtService.sign({ sub: user.id.toString() });
 
     const response = await request(app.getHttpServer())

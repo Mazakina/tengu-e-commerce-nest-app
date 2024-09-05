@@ -31,7 +31,6 @@ describe('Delete Address (E2E)', () => {
 
   test('[DELETE]/address ', async () => {
     const user = await customerFactory.makePrismaCustomer();
-    console.log('reached');
     const accessToken = jwtService.sign({ sub: user.id.toString() });
     const address = await addressFactory.makePrismaAddress({
       street: 'test_street',

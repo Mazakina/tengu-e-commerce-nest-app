@@ -33,7 +33,6 @@ export class PrismaOrderRepository implements OrderRepository {
       where: { userId },
       include: { OrderItem: true },
     });
-    console.log('data:', data);
     const order = data.map((order) => {
       return PrismaOrderMapper.ToDomain(order);
     });

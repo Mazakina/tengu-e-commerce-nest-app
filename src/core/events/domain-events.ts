@@ -85,7 +85,6 @@ export class DomainEvents {
       return;
     }
 
-    console.log('handlers:', eventClassName, this.handlersMap);
     if (isEventRegistered) {
       const handlers = this.handlersMap[eventClassName];
       for (const handler of handlers) {

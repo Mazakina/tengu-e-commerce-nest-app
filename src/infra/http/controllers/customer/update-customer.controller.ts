@@ -28,7 +28,6 @@ export class UpdateCustomerController {
     @Param('slug') slug: string,
     @Body(bodyValidationPipe) body: UpdateCustomerBodySchema,
   ) {
-    console.log('reached');
     const { name, email, password } = body;
     const result = await this.updateCustomerUseCase.execute({
       name,

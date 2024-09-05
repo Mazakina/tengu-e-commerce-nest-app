@@ -1,3 +1,4 @@
+import { DomainEvents } from '@/core/events/domain-events';
 import { UniqueEntityID } from '@/core/primitives/unique-entity-id';
 import { OrderRepository } from '@/domain/application/repositories/order-repository';
 import { Order } from '@/domain/enterprise/entities/order';
@@ -6,10 +7,14 @@ export class InMemoryOrderRepository implements OrderRepository {
   public items: Order[] = [];
   async create(order: Order): Promise<void> {
     this.items.push(order);
+    DomainEvents.dispatchEventsForAggregate(order.id);
   }
   async update(order: Order): Promise<void> {
     const index = this.items.findIndex((item) => item.id.equals(order.id));
     this.items[index] = order;
+    if (order.status === 'cancelled') {
+      DomainEvents.dispatchEventsForAggregate(order.id);
+    }
   }
   async findByID(orderID: string): Promise<Order> {
     const index = this.items.findIndex(

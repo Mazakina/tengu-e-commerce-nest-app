@@ -11,7 +11,7 @@ import { z } from 'zod';
 
 const bodyValidationSchema = z.object({
   userId: z.string(),
-  itemId: z.string(),
+  productId: z.string(),
   quantity: z.number().min(1),
 });
 
@@ -26,11 +26,11 @@ export class AddItemToCartController {
   @Put()
   @HttpCode(202)
   async handle(@Body(zodValidationPipe) body: BodyValidationSchema) {
-    const { userId, itemId, quantity } = body;
+    const { userId, productId, quantity } = body;
 
     const result = await this.addItemToCartUseCase.execute({
       userId,
-      itemId,
+      productId,
       quantity,
     });
 

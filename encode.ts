@@ -2,5 +2,5 @@
 const rsaKey = ``;
 
 // Encode the key to Base64
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const base64EncodedKey = Buffer.from(rsaKey).toString('base64');
-console.log(base64EncodedKey);

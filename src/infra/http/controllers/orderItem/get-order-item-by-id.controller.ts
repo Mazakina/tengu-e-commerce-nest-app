@@ -9,7 +9,6 @@ export class GetOrderItemByIdController {
   async handle(@Param('id') id: string) {
     const result = await this.getOrderItemByIdUseCase.execute(id);
 
-    console.log(result);
     if (result.isLeft()) {
       throw new NotFoundException();
     }

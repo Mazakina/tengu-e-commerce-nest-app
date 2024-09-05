@@ -21,7 +21,8 @@ export class InMemoryProductsRepository implements ProductsRepository {
     const productIndex = this.items.findIndex(
       (item) => item.id.toString() === data.productId,
     );
-    this.items[productIndex].stock -= data.valuetoSubtract;
+    this.items[productIndex].stock =
+      this.items[productIndex].stock - data.valuetoSubtract;
   }
   async findAll({ page }: findAllProductsRequest): Promise<Product[]> {
     return this.items.slice((page - 1) * 20, page * 20);

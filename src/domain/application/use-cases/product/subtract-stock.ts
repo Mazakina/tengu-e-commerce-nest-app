@@ -3,12 +3,12 @@ import { ProductsRepository } from '../../repositories/product-repository';
 import { Either, left, right } from '@/core/either';
 import { OutOfStockError } from '../errors/out-of-stock-error';
 
-type SubtractStockUseCaseRequest = {
+export type SubtractStockUseCaseRequest = {
   productId: string;
   valuetoSubtract: number;
 };
 
-type SubtractStockUseCaseResponse = Either<
+export type SubtractStockUseCaseResponse = Either<
   OutOfStockError | NotFoundException,
   void
 >;
@@ -22,6 +22,7 @@ export class SubtractStockUseCase {
     valuetoSubtract,
   }: SubtractStockUseCaseRequest): Promise<SubtractStockUseCaseResponse> {
     const product = await this.productsRepository.findByID(productId);
+    console.log('hit');
     if (!product) {
       return left(new NotFoundException());
     }

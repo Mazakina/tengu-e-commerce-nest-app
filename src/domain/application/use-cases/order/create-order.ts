@@ -10,6 +10,7 @@ import { UniqueEntityID } from '@/core/primitives/unique-entity-id';
 import { OrderItem } from '@/domain/enterprise/entities/orderItem';
 import { ProductsRepository } from '../../repositories/product-repository';
 import { OutOfStockError } from '../errors/out-of-stock-error';
+import { randomUUID } from 'crypto';
 
 interface orderItemDetails {
   productId: string;
@@ -54,11 +55,7 @@ export class CreateOrderUseCase {
     }
 
     const items: OrderItem[] = [];
-
-    const order = Order.create(
-      { items, address, status, idempotencyKey, userId },
-      EntityId,
-    );
+    const uuid = randomUUID();
 
     for (const item of itemsDetails) {
       const response = await this.productRepository.findByID(item.productId);
@@ -73,15 +70,19 @@ export class CreateOrderUseCase {
       }
 
       const orderItem = OrderItem.create({
-        orderId: order.id.toString(),
+        orderId: uuid,
         productId: item.productId,
         quantity: item.quantity,
         price: response.price,
       });
-      order.items = [...order.items, orderItem];
+      items.push(orderItem);
     }
 
-    order.dispatch();
+    const order = Order.create(
+      { items, address, status, idempotencyKey, userId },
+      EntityId,
+    );
+
     await this.orderRepository.create(order);
 
     return right({ order });

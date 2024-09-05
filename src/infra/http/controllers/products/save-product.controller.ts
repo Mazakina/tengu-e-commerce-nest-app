@@ -37,8 +37,6 @@ export class SaveProductController {
     const { name, price, description, stock, collections, sizes, models } =
       body;
 
-    console.log('test');
-
     const result = await this.saveProductUseCase.execute({
       id: productId,
       name,

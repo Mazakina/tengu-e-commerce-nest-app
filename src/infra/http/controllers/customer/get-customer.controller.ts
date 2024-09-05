@@ -13,7 +13,6 @@ export class GetCustomerController {
     if (result.isLeft()) {
       throw new BadRequestException();
     }
-    console.log(result.value.customer);
     return { customer: CustomerPresenter.toHttp(result.value.customer) };
   }
 }
