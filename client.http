@@ -56,8 +56,6 @@ Authorization: Bearer {{authToken}}
 
 # @name create_order
 POST {{baseUrl}}/order/create
-
-
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
@@ -68,12 +66,12 @@ Authorization: Bearer {{authToken}}
       "quantity":2
     },
     {
-      "productId":"13473558-252b-48ef-9cef-46360e493da3",
+      "productId":"3d82f9dd-b13d-44d0-8c66-3c57eb5207f5",
       "quantity":2
     }
   ],
   "address":"testing",
-  "idempotencyKey":"idempotencyKey:2",
+  "idempotencyKey":"idempotencyKey:3",
   "userId":"51a95959-bf5b-4209-99b0-d187061fa847"
 }
 

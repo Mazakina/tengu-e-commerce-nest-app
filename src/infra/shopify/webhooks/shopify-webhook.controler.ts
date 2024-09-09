@@ -6,6 +6,7 @@ import {
   Body,
   Controller,
   Delete,
+  HttpCode,
   Post,
 } from '@nestjs/common';
 
@@ -18,6 +19,7 @@ export class ShopifyWebhookController {
   ) {}
 
   @Post('products/create')
+  @HttpCode(202)
   async handleProductCreate(@Body() productData: any) {
     const { id, title, variants, description, options, collections } =
       productData;

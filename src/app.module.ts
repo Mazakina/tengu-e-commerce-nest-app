@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './infra/app.controller';
 import { HttpModule } from './infra/http/http.module';
 import { envSchema } from './infra/env/env';
-// import { ShopifyModule } from './infra/shopify/shopify.module';
+import { ShopifyModule } from './infra/shopify/shopify.module';
 import { EnvModule } from './infra/env/env.module';
 import { AuthModule } from './infra/auth/auth.module';
 import { EventsModule } from './infra/events/events.module';
@@ -17,7 +17,7 @@ import { EventsModule } from './infra/events/events.module';
     EnvModule,
     AuthModule,
     HttpModule,
-    // ShopifyModule,
+    ShopifyModule,
     EventsModule,
   ],
   controllers: [AppController],
