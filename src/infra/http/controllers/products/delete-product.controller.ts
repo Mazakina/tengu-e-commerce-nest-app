@@ -15,6 +15,7 @@ export class DeleteProductController {
   @HttpCode(202)
   async handle(@Param('slug') slug: string) {
     const result = await this.deleteProductUseCase.execute(slug);
+
     if (result.isLeft()) {
       throw new BadRequestException();
     }

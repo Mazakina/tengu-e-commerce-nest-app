@@ -53,7 +53,7 @@ O projeto está em constante desenvolvimento, com novas funcionalidades e melhor
 - [x] Desenvolvimento da Infraestrutura da aplicação
 - [x] Implementação do Banco de Dados (Prisma/Postgres)
 - [x] Cobertura de Testes Unitários e E2E
-- [ ] Implementação de Armazenamento em Cache (Redis)
+- [x] Implementação de Armazenamento em Cache (Redis)
 - [ ] Integração com Plataforma de Pagamento
 - [ ] Testes para Novas Features
 
@@ -70,3 +70,5 @@ Se você quiser contribuir com o desenvolvimento do **Tengu-Drip**, siga os pass
 ## 📝 Licença
 
 Este projeto está licenciado sob a [MIT License](LICENSE).
+
+  
