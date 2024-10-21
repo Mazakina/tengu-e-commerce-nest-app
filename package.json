@@ -6,9 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "npm run prisma:migrate && npm run prisma:generate && nest build",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate deploy",
+    "build": "npx prisma migrate deploy && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "set NODE_OPTIONS=--max-old-space-size=512 && nest start --watch",
