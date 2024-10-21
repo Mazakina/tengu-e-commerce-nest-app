@@ -70,5 +70,3 @@ Se você quiser contribuir com o desenvolvimento do **Tengu-Drip**, siga os pass
 ## 📝 Licença
 
 Este projeto está licenciado sob a [MIT License](LICENSE).
-
-  
